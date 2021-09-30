@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 3470363452487282066}
-  radius: 0.2
+  radius: 0.35
   height: 2
   crouchHeight: 1
   crouchSpeed: 4.5
