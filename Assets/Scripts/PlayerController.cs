@@ -19,7 +19,11 @@ public class PlayerController : MonoBehaviour
 
 	[Header("Player Limits")]
 	public float jumpHeight = 1f;
-	public float lookXLimit = 85.0f;
+	public float lookYLimit = 85.0f;
+
+	[Header("Player Inversions")]
+	public bool invertY = false;
+	public bool invertX = false;
 
 	private bool canMove = true;
 	private CharacterController cc;
@@ -83,11 +87,18 @@ public class PlayerController : MonoBehaviour
 		if (canMove)
 		{
 			rotationX += lookInput.y * lookSpeed;
+<<<<<<< HEAD
 			rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 			playerCamera.transform.localRotation = Quaternion.Euler(-rotationX, 0, 0);
+=======
+			rotationX = Mathf.Clamp(rotationX, -lookYLimit, lookYLimit);
+
+			playerCamera.transform.localRotation = Quaternion.Euler(invertY ? rotationX : -rotationX, 0, 0);
+>>>>>>> a66ab04802ae1c036de98560c15cfadc9d532f54
 			playerCamera.transform.rotation = Quaternion.LookRotation(playerCamera.transform.forward, Vector3.up);
 
-			transform.rotation *= Quaternion.Euler(0, lookInput.x * lookSpeed, 0);
+			var rotationY = lookInput.x * lookSpeed;
+			transform.rotation *= Quaternion.Euler(0, invertX ? -rotationY : rotationY, 0);
 		}
 	}
 
