@@ -45,13 +45,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.6
+  m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!114 &3470363452113967612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,14 +66,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 3470363452487282066}
   radius: 0.35
-  height: 2
-  crouchHeight: 1
+  height: 1.6
+  crouchHeight: 1.1
   crouchSpeed: 4.5
   walkingSpeed: 7.5
   runningSpeedMultiplier: 1.2
   lookSpeed: 0.2
   jumpHeight: 1
-  lookXLimit: 85
+  lookYLimit: 85
+  invertY: 0
+  invertX: 0
 --- !u!114 &3470363452113967613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +132,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3470363452487282069}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3470363452113967610}
