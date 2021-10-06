@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
@@ -34,14 +35,19 @@ public class PlayerController : MonoBehaviour
 	private bool hasJump;
 	private bool isRunning;
 	private bool isCrouched;
+    private bool isInteracting;
+    private bool isDropping;
 
 	private Vector2 input;
 	private Vector2 lookInput;
 
-	private Vector3 Forward => transform.TransformDirection(Vector3.forward);
+    private Vector3 Forward => transform.TransformDirection(Vector3.forward);
 	private Vector3 Right => transform.TransformDirection(Vector3.right);
 
-	private void Awake()
+	public UnityEvent interact = new UnityEvent();
+	public UnityEvent drop = new UnityEvent();
+
+    private void Awake()
 	{
 		cc = GetComponent<CharacterController>();
 	}
@@ -135,5 +141,17 @@ public class PlayerController : MonoBehaviour
 	public void OnCrouch(InputValue value)
     {
 		isCrouched = canMove && value.Get<float>() == 1;
+	}
+
+	public void OnInteract(InputValue value)
+	{
+		isInteracting = value.Get<float>() == 1;
+		if (isInteracting) interact?.Invoke();
+	}
+
+	public void OnDrop(InputValue value)
+	{
+		isDropping = value.Get<float>() == 1;
+		if (isDropping) drop?.Invoke();
 	}
 }
