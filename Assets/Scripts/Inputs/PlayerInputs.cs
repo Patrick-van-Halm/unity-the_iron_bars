@@ -73,6 +73,14 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Flashlight"",
+                    ""type"": ""Value"",
+                    ""id"": ""c4ebbcc6-8469-41de-b30f-7dc78509eb67"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -196,6 +204,17 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                     ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1dee9378-e784-45a0-9a1f-ec3b478764bc"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Flashlight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -211,6 +230,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
         m_CharacterControls_Crouch = m_CharacterControls.FindAction("Crouch", throwIfNotFound: true);
         m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
         m_CharacterControls_Drop = m_CharacterControls.FindAction("Drop", throwIfNotFound: true);
+        m_CharacterControls_Flashlight = m_CharacterControls.FindAction("Flashlight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -267,6 +287,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_CharacterControls_Crouch;
     private readonly InputAction m_CharacterControls_Interact;
     private readonly InputAction m_CharacterControls_Drop;
+    private readonly InputAction m_CharacterControls_Flashlight;
     public struct CharacterControlsActions
     {
         private @PlayerInputs m_Wrapper;
@@ -278,6 +299,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
         public InputAction @Crouch => m_Wrapper.m_CharacterControls_Crouch;
         public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
         public InputAction @Drop => m_Wrapper.m_CharacterControls_Drop;
+        public InputAction @Flashlight => m_Wrapper.m_CharacterControls_Flashlight;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,6 +330,9 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 @Drop.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDrop;
                 @Drop.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDrop;
                 @Drop.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnDrop;
+                @Flashlight.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnFlashlight;
+                @Flashlight.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnFlashlight;
+                @Flashlight.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnFlashlight;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -333,6 +358,9 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 @Drop.started += instance.OnDrop;
                 @Drop.performed += instance.OnDrop;
                 @Drop.canceled += instance.OnDrop;
+                @Flashlight.started += instance.OnFlashlight;
+                @Flashlight.performed += instance.OnFlashlight;
+                @Flashlight.canceled += instance.OnFlashlight;
             }
         }
     }
@@ -346,5 +374,6 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
+        void OnFlashlight(InputAction.CallbackContext context);
     }
 }

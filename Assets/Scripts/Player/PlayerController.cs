@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 	private bool isCrouched;
     private bool isInteracting;
     private bool isDropping;
+    private bool isFlashlightToggled;
 
 	private Vector2 input;
 	private Vector2 lookInput;
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
 
 	public UnityEvent interact = new UnityEvent();
 	public UnityEvent drop = new UnityEvent();
+	public UnityEvent<bool> flashlight = new UnityEvent<bool>();
 
     private void Awake()
 	{
@@ -153,5 +155,14 @@ public class PlayerController : MonoBehaviour
 	{
 		isDropping = value.Get<float>() == 1;
 		if (isDropping) drop?.Invoke();
+	}
+
+	public void OnFlashlight(InputValue value)
+	{
+		if (value.isPressed)
+		{
+			isFlashlightToggled = !isFlashlightToggled;
+			flashlight?.Invoke(isFlashlightToggled);
+		}
 	}
 }
