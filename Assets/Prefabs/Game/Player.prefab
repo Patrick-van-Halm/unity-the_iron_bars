@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &352142843
 Transform:
   m_ObjectHideFlags: 0
@@ -205,6 +205,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   drop:
+    m_PersistentCalls:
+      m_Calls: []
+  flashlight:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &3470363452113967613
