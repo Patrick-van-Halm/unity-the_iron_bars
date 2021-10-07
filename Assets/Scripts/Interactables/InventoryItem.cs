@@ -23,6 +23,11 @@ public class InventoryItem : Interactable
 
     protected override void Interact()
     {
+        if (InventoryManager.Instance.Item) 
+        {
+            SetIconAndText(InventoryManager.Instance.inventoryFullIcon, "Inventory is full");
+            return;
+        }
         InventoryManager.Instance.PickupItem(this);
         gameObject.SetActive(false);
     }

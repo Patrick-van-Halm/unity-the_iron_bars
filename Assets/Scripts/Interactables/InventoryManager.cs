@@ -14,6 +14,7 @@ public class InventoryManager : MonoBehaviour
     public Texture2D emptyTexture;
     public float throwSpeed;
     public Transform dropItemAnchor;
+    public Texture2D inventoryFullIcon;
 
     private PlayerController playerController;
 
