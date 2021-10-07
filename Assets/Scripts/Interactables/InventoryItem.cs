@@ -14,11 +14,17 @@ public class InventoryItem : Interactable
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Drop(Vector3 pos, Vector3 velocity)
+    public virtual void Drop(Vector3 pos, Vector3 velocity)
     {
         transform.position = pos;
         gameObject.SetActive(true);
         rb.velocity = velocity;
+    }
+
+    protected virtual void Pickup()
+    {
+        InventoryManager.Instance.PickupItem(this);
+        gameObject.SetActive(false);
     }
 
     protected override void Interact()
@@ -28,7 +34,7 @@ public class InventoryItem : Interactable
             SetIconAndText(InventoryManager.Instance.inventoryFullIcon, "Inventory is full");
             return;
         }
-        InventoryManager.Instance.PickupItem(this);
-        gameObject.SetActive(false);
+
+        Pickup();
     }
 }

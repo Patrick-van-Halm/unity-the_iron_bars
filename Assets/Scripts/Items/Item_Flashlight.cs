@@ -6,10 +6,24 @@ public class Item_Flashlight : InventoryItem
 {
     public GameObject lightEmitter;
 
+    private PlayerController playerController;
     protected override void Start()
     {
         base.Start();
-        FindObjectOfType<PlayerController>().secondaryInteract.AddListener(SetEnabled);
+        playerController = FindObjectOfType<PlayerController>();
+    }
+
+    public override void Drop(Vector3 pos, Vector3 velocity)
+    {
+        base.Drop(pos, velocity);
+        SetEnabled(false);
+        playerController.secondaryInteract.RemoveListener(SetEnabled);
+    }
+
+    protected override void Pickup()
+    {
+        base.Pickup();
+        playerController.secondaryInteract.AddListener(SetEnabled);
     }
 
     public void SetEnabled(bool enabled)
