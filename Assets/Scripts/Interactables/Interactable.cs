@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public abstract class Interactable : MonoBehaviour, IRaycastable3D
 {
-    private PlayerController playerController;
+    protected PlayerController playerController;
 
     protected virtual void Start()
     {
@@ -18,12 +18,12 @@ public abstract class Interactable : MonoBehaviour, IRaycastable3D
     public void OnRaycastEnter(RaycastHit hit)
     {
         InteractablesManager.Instance.Show(true);
-        playerController?.interact.AddListener(Interact);
+        playerController?.primaryInteract.AddListener(Interact);
     }
     public void OnRaycastStay(RaycastHit hit){}
     public void OnRaycastExit()
     {
         InteractablesManager.Instance.Show(false);
-        playerController?.interact.RemoveListener(Interact);
+        playerController?.primaryInteract.RemoveListener(Interact);
     }
 }

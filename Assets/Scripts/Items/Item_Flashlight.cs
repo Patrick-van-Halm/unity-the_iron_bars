@@ -9,7 +9,7 @@ public class Item_Flashlight : InventoryItem
     protected override void Start()
     {
         base.Start();
-        FindObjectOfType<PlayerController>().flashlight.AddListener(SetEnabled);
+        FindObjectOfType<PlayerController>().secondaryInteract.AddListener(SetEnabled);
     }
 
     public void SetEnabled(bool enabled)

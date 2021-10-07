@@ -35,9 +35,9 @@ public class PlayerController : MonoBehaviour
 	private bool hasJump;
 	private bool isRunning;
 	private bool isCrouched;
-    private bool isInteracting;
+    public bool isPrimaryInteracting;
     private bool isDropping;
-    private bool isFlashlightToggled;
+    private bool isSecondaryInteractingToggled;
 
 	private Vector2 input;
 	private Vector2 lookInput;
@@ -45,9 +45,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 Forward => transform.TransformDirection(Vector3.forward);
 	private Vector3 Right => transform.TransformDirection(Vector3.right);
 
-	public UnityEvent interact = new UnityEvent();
+	public UnityEvent primaryInteract = new UnityEvent();
 	public UnityEvent drop = new UnityEvent();
-	public UnityEvent<bool> flashlight = new UnityEvent<bool>();
+	public UnityEvent<bool> secondaryInteract = new UnityEvent<bool>();
 
     private void Awake()
 	{
@@ -147,8 +147,8 @@ public class PlayerController : MonoBehaviour
 
 	public void OnInteract(InputValue value)
 	{
-		isInteracting = value.Get<float>() == 1;
-		if (isInteracting) interact?.Invoke();
+		isPrimaryInteracting = value.Get<float>() == 1;
+		if (isPrimaryInteracting) primaryInteract?.Invoke();
 	}
 
 	public void OnDrop(InputValue value)
@@ -161,8 +161,8 @@ public class PlayerController : MonoBehaviour
 	{
 		if (value.isPressed)
 		{
-			isFlashlightToggled = !isFlashlightToggled;
-			flashlight?.Invoke(isFlashlightToggled);
+			isSecondaryInteractingToggled = !isSecondaryInteractingToggled;
+			secondaryInteract?.Invoke(isSecondaryInteractingToggled);
 		}
 	}
 }
