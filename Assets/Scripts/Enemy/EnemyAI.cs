@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
@@ -27,6 +28,8 @@ public class EnemyAI : MonoBehaviour
     private Vector3 lastKnownPlayerLocation;
 
     private Coroutine ChangeStateCoroutine;
+    private float idleTimeout = 15;
+    private bool idleTimeoutEnded = true;
 
     private void Awake()
     {
@@ -35,7 +38,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        state = States.Idle;
+        state = States.Patrolling;
         player = FindObjectOfType<PlayerController>().playerCamera.transform;
     }
 
@@ -46,15 +49,25 @@ public class EnemyAI : MonoBehaviour
         switch (state)
         {
             case States.Idle:
-                ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2, States.Patrolling));
+                agent.enabled = false;
+                ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(1, 5), States.Patrolling));
+                StartCoroutine(IdleTimeout());
                 break;
 
             case States.Patrolling:
-                if (agent.isActiveAndEnabled && agent.remainingDistance < 1)
+                if (!agent.isActiveAndEnabled) agent.enabled = true;
+
+                if (agent.isActiveAndEnabled && agent.remainingDistance < .2f)
                 {
-                    if (waypointIndex == patrollingWaypoints.Length - 1) waypointIndex = -1;
-                    waypointIndex += 1;
-                    agent.SetDestination(patrollingWaypoints[waypointIndex].position);
+                    if (idleTimeoutEnded && Random.Range(0, 100) < 50) 
+                        ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
+                    else
+                    {
+                        if (waypointIndex == patrollingWaypoints.Length - 1) waypointIndex = -1;
+                        waypointIndex += 1;
+
+                        agent.SetDestination(patrollingWaypoints[waypointIndex].position);
+                    }
                 }
 
                 var enemyToPlayerAngleX = Vector3.Angle(SpotterOrigin.forward, new Vector3((player.position - SpotterOrigin.position).x, 0, (player.position - SpotterOrigin.position).z));
@@ -76,6 +89,8 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (hitInfo.collider.CompareTag("Player"))
                     {
+                        if (hitInfo.distance < .2f) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
                         lastKnownPlayerLocation = hitInfo.collider.transform.position;
                         if (ChangeStateCoroutine != null)
                         {
@@ -111,6 +126,9 @@ public class EnemyAI : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawLine(SpotterOrigin.position, SpotterOrigin.position + (Quaternion.Euler(0, maxVisibleAngleX, 0) * SpotterOrigin.forward * spotDistance));
         Gizmos.DrawLine(SpotterOrigin.position, SpotterOrigin.position + (Quaternion.Euler(0, -maxVisibleAngleX, 0) * SpotterOrigin.forward * spotDistance));
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, agent.destination);
         //print((player.position - transform.position).normalized);
         //print(Vector3.Angle(SpotterOrigin.forward, new Vector3((player.position - SpotterOrigin.position).normalized.x, 0, 0)));
     }
@@ -121,5 +139,12 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         state = newState;
         ChangeStateCoroutine = null;
+    }
+
+    IEnumerator IdleTimeout()
+    {
+        idleTimeoutEnded = false;
+        yield return new WaitForSeconds(idleTimeout);
+        idleTimeoutEnded = true;
     }
 }
