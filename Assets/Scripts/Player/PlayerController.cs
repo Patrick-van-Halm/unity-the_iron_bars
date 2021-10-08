@@ -133,6 +133,7 @@ public class PlayerController : MonoBehaviour
 	public void OnJump(InputValue value)
     {
 		hasJump = canMove && value.Get<float>() == 1;
+		print(value);
     }
 
 	public void OnSprint(InputValue value)
