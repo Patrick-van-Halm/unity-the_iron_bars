@@ -11,6 +11,7 @@ public abstract class Door : Interactable
         Closed
     }
 
+    public States initialState;
     public UnityEvent<States> stateChanged = new UnityEvent<States>();
 
     protected States State { get; set; }
@@ -19,5 +20,11 @@ public abstract class Door : Interactable
     {
         State = open ? States.Open : States.Closed;
         stateChanged?.Invoke(State); 
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        SetDoor(initialState == States.Open);
     }
 }

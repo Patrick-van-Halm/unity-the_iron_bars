@@ -92,8 +92,6 @@ public class Wires : Puzzle2D
             wires[i].SetColor(colors[i]);
             wires[i].ResetTransforms();
         }
-
-        Toggle();
     }
 
     private void Update()

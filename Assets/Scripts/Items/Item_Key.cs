@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Item_Key : InventoryItem
 {
-    public Door_Locked opens;
+    public Door_Locked_Key opens;
 }

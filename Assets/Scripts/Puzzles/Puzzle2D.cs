@@ -8,7 +8,7 @@ public enum PuzzleState
     Finished
 }
 
-public abstract class Puzzle2D : MonoBehaviour, IRaycastable3D
+public abstract class Puzzle2D : Interactable
 {
     [Header("Puzzle2D Settings")]
     public float interactionRange;
@@ -22,21 +22,22 @@ public abstract class Puzzle2D : MonoBehaviour, IRaycastable3D
 
     private PlayerController controller;
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         controller = FindObjectOfType<PlayerController>();
     }
 
-    protected virtual void Toggle() 
+    protected override void Interact()
     {
-        controller.SetCCEnabled(false);
+        Toggle();
+    }
+
+    public virtual void Toggle() 
+    {
         canvas.SetActive(!IsOpen);
+        controller.SetCCEnabled(!IsOpen);
         if (IsOpen && PuzzleState == PuzzleState.NotStarted) PuzzleState = PuzzleState.Started;
-        if (IsOpen)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
     }
 
     protected void Finish()
@@ -44,13 +45,4 @@ public abstract class Puzzle2D : MonoBehaviour, IRaycastable3D
         PuzzleState = PuzzleState.Finished;
         OnPuzzleFinished?.Invoke();
     }
-
-    public virtual void OnRaycastStay(RaycastHit hit)
-    {
-        if (hit.distance > interactionRange) return;
-        if (!Input.GetKeyDown(KeyCode.E)) return;
-        Toggle();
-    }
-    public virtual void OnRaycastEnter(RaycastHit hit){}
-    public virtual void OnRaycastExit(){}
 }

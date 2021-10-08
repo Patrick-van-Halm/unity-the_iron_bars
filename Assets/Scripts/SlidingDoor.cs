@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class SlidingDoor : MonoBehaviour
 {
-    public GameObject gameObject;
-    public float openingSpeed = 5.0f;
-    
-    public Vector3 endPosition;
-    private Vector3 startPosition;
-
-
+    public Animator animator;
+ 
     // Start is called before the first frame update
     void Start()
     {
-        startPosition = gameObject.transform.position;
+
     }
 
     // Update is called once per frame
@@ -27,11 +22,13 @@ public class SlidingDoor : MonoBehaviour
     {
         if (state == Door.States.Open)
         {
-            gameObject.transform.position = startPosition + endPosition;
+
+            animator.SetBool("Open", true);
         } 
         else
         {
-            gameObject.transform.position = startPosition;
+
+            animator.SetBool("Open", false);
         }
     }
 
