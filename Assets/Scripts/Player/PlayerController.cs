@@ -26,18 +26,22 @@ public class PlayerController : MonoBehaviour
 	public bool invertY = false;
 	public bool invertX = false;
 
+	[Header("Menu's")]
+	public GameObject SettingsMenu;
+
+	[Header("Inputs")]
+	public bool hasJump;
+	public bool isRunning;
+	public bool isCrouched;
+	public bool isPrimaryInteracting;
+	public bool isDropping;
+	public bool isSecondaryInteractingToggled;
+
 	private bool canMove = true;
 	private CharacterController cc;
 	
 	private Vector3 velocity = Vector3.zero;
 	private float rotationX = 0;
-	
-	private bool hasJump;
-	private bool isRunning;
-	private bool isCrouched;
-    public bool isPrimaryInteracting;
-    private bool isDropping;
-    private bool isSecondaryInteractingToggled;
 
 	private Vector2 input;
 	private Vector2 lookInput;
@@ -59,6 +63,8 @@ public class PlayerController : MonoBehaviour
 		cc.radius = radius;
 		cc.height = height;
 		cc.skinWidth = radius * .1f;
+
+		SetCCEnabled(true);
 	}
 
 	private void Update()
@@ -71,6 +77,17 @@ public class PlayerController : MonoBehaviour
 	{
 		cc.enabled = enabled;
 		canMove = enabled;
+
+        if (enabled)
+        {
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+        }
+        else
+        {
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+		}
 	}
 
 	private void ApplyGravityAndJump()
@@ -165,5 +182,14 @@ public class PlayerController : MonoBehaviour
 			isSecondaryInteractingToggled = !isSecondaryInteractingToggled;
 			secondaryInteract?.Invoke(isSecondaryInteractingToggled);
 		}
+	}
+
+	public void OnSettings(InputValue value)
+	{
+        if (value.isPressed)
+        {
+			SettingsMenu.SetActive(!SettingsMenu.activeSelf);
+			SetCCEnabled(!SettingsMenu.activeSelf);
+        }
 	}
 }

@@ -81,6 +81,14 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Settings"",
+                    ""type"": ""Value"",
+                    ""id"": ""98949eda-2f82-4f86-afad-0a6fe1d6880a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -141,11 +149,55 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""a2480794-634b-412d-916f-b3ee2d373b54"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e9cdcbd-eb5b-43f3-a427-abb02f212366"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eddbfb97-11b9-4f85-9878-6e831e47ea8f"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""dfff26f3-3564-4687-abc2-588e272630c9"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dcaabce4-5224-43ff-980f-96d1652caa5e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -207,12 +259,23 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b4dcae9f-72d0-44e9-bd73-969096bb2534"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""8e7bc1f8-53bf-4349-86f9-d8f12a1d86f9"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Look"",
+                    ""groups"": """",
+                    ""action"": ""Settings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74b8c932-9923-408b-a856-766f76203b2e"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Settings"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -248,6 +311,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
         m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
         m_CharacterControls_Drop = m_CharacterControls.FindAction("Drop", throwIfNotFound: true);
         m_CharacterControls_Flashlight = m_CharacterControls.FindAction("Flashlight", throwIfNotFound: true);
+        m_CharacterControls_Settings = m_CharacterControls.FindAction("Settings", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -305,6 +369,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_CharacterControls_Interact;
     private readonly InputAction m_CharacterControls_Drop;
     private readonly InputAction m_CharacterControls_Flashlight;
+    private readonly InputAction m_CharacterControls_Settings;
     public struct CharacterControlsActions
     {
         private @PlayerInputs m_Wrapper;
@@ -317,6 +382,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
         public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
         public InputAction @Drop => m_Wrapper.m_CharacterControls_Drop;
         public InputAction @Flashlight => m_Wrapper.m_CharacterControls_Flashlight;
+        public InputAction @Settings => m_Wrapper.m_CharacterControls_Settings;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -350,6 +416,9 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 @Flashlight.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnFlashlight;
                 @Flashlight.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnFlashlight;
                 @Flashlight.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnFlashlight;
+                @Settings.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSettings;
+                @Settings.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSettings;
+                @Settings.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSettings;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -378,6 +447,9 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 @Flashlight.started += instance.OnFlashlight;
                 @Flashlight.performed += instance.OnFlashlight;
                 @Flashlight.canceled += instance.OnFlashlight;
+                @Settings.started += instance.OnSettings;
+                @Settings.performed += instance.OnSettings;
+                @Settings.canceled += instance.OnSettings;
             }
         }
     }
@@ -401,5 +473,6 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
         void OnFlashlight(InputAction.CallbackContext context);
+        void OnSettings(InputAction.CallbackContext context);
     }
 }

@@ -201,7 +201,13 @@ MonoBehaviour:
   lookYLimit: 85
   invertY: 0
   invertX: 0
+  SettingsMenu: {fileID: 0}
+  hasJump: 0
+  isRunning: 0
+  isCrouched: 0
   isPrimaryInteracting: 0
+  isDropping: 0
+  isSecondaryInteractingToggled: 0
   primaryInteract:
     m_PersistentCalls:
       m_Calls: []
