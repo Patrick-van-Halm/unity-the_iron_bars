@@ -5,12 +5,9 @@ using UnityEngine;
 public class Item_Flashlight : InventoryItem
 {
     public GameObject lightEmitter;
-
-    private PlayerController playerController;
     protected override void Start()
     {
         base.Start();
-        playerController = FindObjectOfType<PlayerController>();
     }
 
     public override void Drop(Vector3 pos, Vector3 velocity)
