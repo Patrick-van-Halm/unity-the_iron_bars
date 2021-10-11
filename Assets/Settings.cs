@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
@@ -54,5 +55,10 @@ public class Settings : MonoBehaviour
     {
         player.invertY = value;
         PlayerPrefs.SetInt("invertY", value ? 1 : 0);
+    }
+
+    public void ResetLvl()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
