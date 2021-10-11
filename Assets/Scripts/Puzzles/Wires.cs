@@ -98,9 +98,16 @@ public class Wires : Puzzle2D
     {
         if (PuzzleState == PuzzleState.Finished) return;
 
-        for(int i = 0; i < wireCount; i++)
+        if(wires.Any(w => w.IsHolding))
         {
-            wires[i]?.Update();
+            wires.First(w => w.IsHolding).Update();
+        }
+        else
+        {
+            for(int i = 0; i < wireCount; i++)
+            {
+                wires[i]?.Update();
+            }
         }
 
         if(wires.All(w => w != null && w.IsConnectedCorrectly))
