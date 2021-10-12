@@ -10,8 +10,6 @@ public class Door_Locked : Door
 
     protected override void Interact()
     {
-
-
         if (isLocked)
         {
             SetIconAndText(lockedIcon, "Door is locked.");

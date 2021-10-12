@@ -24,6 +24,7 @@ public class Door_PickLockable : Door
             InventoryManager.Instance.DestroyItem();
             ChangeLockState(false);
             SetIconAndText(unlockedIcon, "Door has been unlocked.");
+            ResetIconAndTextAfterSeconds(2);
             return;
         }
         else

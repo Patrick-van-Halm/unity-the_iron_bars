@@ -32,10 +32,15 @@ public class InteractablesManager : MonoBehaviour
         textElement.text = text;
     }
 
-    public void Show(bool a)
+    public void ChangeToDefaultIconAndText()
     {
         textElement.text = "Press [" + input.CharacterControls.Interact.controls[0].displayName.ToUpper() + "] to interact.";
         iconElement.texture = interactableDefaultIcon;
+    }
+
+    public void Show(bool a)
+    {
+        ChangeToDefaultIconAndText();
         display.SetActive(a);
     }
 }
