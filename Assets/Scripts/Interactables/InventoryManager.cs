@@ -27,7 +27,7 @@ public class InventoryManager : MonoBehaviour
         DontDestroyOnLoad(Instance);
     }
 
-    private void DropItem()
+    public void DropItem()
     {
         if (!Item) return;
 

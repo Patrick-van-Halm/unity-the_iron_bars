@@ -31,9 +31,10 @@ public class InventoryItem : Interactable
     {
         if (InventoryManager.Instance.Item) 
         {
-            SetIconAndText(InventoryManager.Instance.inventoryFullIcon, "Inventory is full");
-            ResetIconAndTextAfterSeconds(1);
-            return;
+            //SetIconAndText(InventoryManager.Instance.inventoryFullIcon, "Inventory is full");
+            //ResetIconAndTextAfterSeconds(1);
+            //return;
+            InventoryManager.Instance.DropItem();
         }
 
         Pickup();
