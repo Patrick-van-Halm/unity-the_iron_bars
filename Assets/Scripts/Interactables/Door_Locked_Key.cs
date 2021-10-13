@@ -29,7 +29,7 @@ public class Door_Locked_Key : Door
         }
         else
         {
-            SetDoor(State != States.Open);
+            base.Interact();
         }
     }
 

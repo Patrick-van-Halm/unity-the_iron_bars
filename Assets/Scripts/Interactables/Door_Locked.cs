@@ -17,7 +17,7 @@ public class Door_Locked : Door
         }
         else
         {
-            SetDoor(State != States.Open);
+            base.Interact();
         }
     }
 

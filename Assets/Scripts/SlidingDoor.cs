@@ -5,31 +5,14 @@ using UnityEngine;
 public class SlidingDoor : MonoBehaviour
 {
     public Animator animator;
- 
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        animator.SetBool("Open", false);
     }
 
     public void SlideDoor(Door.States state)
     {
-        if (state == Door.States.Open)
-        {
-
-            animator.SetBool("Open", true);
-        } 
-        else
-        {
-
-            animator.SetBool("Open", false);
-        }
+        animator.SetBool("Open", state == Door.States.Open);
     }
-
 }

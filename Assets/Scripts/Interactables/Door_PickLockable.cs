@@ -29,7 +29,7 @@ public class Door_PickLockable : Door
         }
         else
         {
-            SetDoor(State != States.Open);
+            base.Interact();
         }
     }
 

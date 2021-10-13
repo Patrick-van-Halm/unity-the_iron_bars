@@ -14,17 +14,22 @@ public abstract class Door : Interactable
     public States initialState;
     public UnityEvent<States> stateChanged = new UnityEvent<States>();
 
-    protected States State { get; set; }
+    private States state;
 
     protected virtual void SetDoor(bool open)
     {
-        State = open ? States.Open : States.Closed;
-        stateChanged?.Invoke(State); 
+        state = open ? States.Open : States.Closed;
+        stateChanged?.Invoke(state); 
+    }
+
+    protected override void Interact()
+    {
+        SetDoor(state != States.Open);
     }
 
     protected override void Start()
     {
         base.Start();
-        SetDoor(initialState == States.Open);
+        state = initialState;
     }
 }
