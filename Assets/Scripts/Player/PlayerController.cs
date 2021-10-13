@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
 		cc.height = height;
 		cc.skinWidth = radius * .1f;
 
-		SetCCEnabled(true);
+		SetCanMove(true);
 	}
 
 	private void Update()
@@ -73,9 +73,8 @@ public class PlayerController : MonoBehaviour
 		ProcessPlayerMovement();
 	}
 
-	public void SetCCEnabled(bool enabled)
+	public void SetCanMove(bool enabled)
 	{
-		cc.enabled = enabled;
 		canMove = enabled;
 
         if (enabled)
@@ -189,7 +188,7 @@ public class PlayerController : MonoBehaviour
         if (value.isPressed)
         {
 			SettingsMenu.SetActive(!SettingsMenu.activeSelf);
-			SetCCEnabled(!SettingsMenu.activeSelf);
+			SetCanMove(!SettingsMenu.activeSelf);
         }
 	}
 }

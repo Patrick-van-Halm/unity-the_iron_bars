@@ -36,7 +36,7 @@ public abstract class Puzzle2D : Interactable
     public virtual void Toggle() 
     {
         canvas.SetActive(!IsOpen);
-        controller.SetCCEnabled(!IsOpen);
+        controller.SetCanMove(!IsOpen);
         if (IsOpen && PuzzleState == PuzzleState.NotStarted) PuzzleState = PuzzleState.Started;
     }
 
