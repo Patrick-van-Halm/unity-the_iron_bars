@@ -109,7 +109,7 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case States.Targeting:
-                if (!playerStillDetected)
+                if (!playerStillDetected && state != prevState)
                 {
                     if (animator) animator.SetTrigger("PlayerDetected");
                     if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
