@@ -5021,19 +5021,19 @@ PrefabInstance:
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[0]
       value: 
-      objectReference: {fileID: 289243301}
+      objectReference: {fileID: 50836912}
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[1]
       value: 
-      objectReference: {fileID: 1236866118}
+      objectReference: {fileID: 289243301}
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[2]
       value: 
-      objectReference: {fileID: 504757290}
+      objectReference: {fileID: 1236866118}
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[3]
       value: 
-      objectReference: {fileID: 50836912}
+      objectReference: {fileID: 504757290}
     - target: {fileID: 3159323459192016565, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: m_Name
       value: Guard (1)
@@ -9412,19 +9412,19 @@ PrefabInstance:
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[0]
       value: 
-      objectReference: {fileID: 289243301}
+      objectReference: {fileID: 1236866118}
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[1]
       value: 
-      objectReference: {fileID: 1236866118}
+      objectReference: {fileID: 504757290}
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[2]
       value: 
-      objectReference: {fileID: 504757290}
+      objectReference: {fileID: 50836912}
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[3]
       value: 
-      objectReference: {fileID: 50836912}
+      objectReference: {fileID: 289243301}
     - target: {fileID: 3159323459192016565, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: m_Name
       value: Guard
