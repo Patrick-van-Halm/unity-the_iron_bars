@@ -10,6 +10,7 @@ public class InteractablesManager : MonoBehaviour
     
     public GameObject display;
     public Texture2D interactableDefaultIcon;
+    public NoteScreen noteScreen;
     public PlayerInputs input;
 
     private TMP_Text textElement;

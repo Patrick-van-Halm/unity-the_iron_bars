@@ -19,9 +19,11 @@ public class EnemyAI : MonoBehaviour
     public float maxVisibleAngleX;
     public float maxDoorDetectionAngleX;
     public float spotDistance = 5;
+    public float patrollingSpeedModifier = .75f;
 
     [Header("Audio")]
     public AudioClip soundDetectionClip;
+    public AudioClip[] footstepClips;
 
     private NavMeshAgent agent;
     private States state;
@@ -36,10 +38,15 @@ public class EnemyAI : MonoBehaviour
     private float idleTimeout = 15;
     private bool idleTimeoutEnded = true;
 
+    private bool playerStillDetected = true;
+
+    private float baseSpeed;
+
     private Door openedDoor;
 
     private AudioSource audioSource;
     private Animator animator;
+    private Coroutine footstepSounds;
 
     private void Awake()
     {
@@ -52,6 +59,8 @@ public class EnemyAI : MonoBehaviour
     {
         state = States.Patrolling;
         player = FindObjectOfType<PlayerController>().playerCamera.transform;
+        audioSource.volume = .8f;
+        baseSpeed = agent.speed;
     }
 
     void Update()
@@ -68,7 +77,10 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case States.Patrolling:
+                playerStillDetected = false;
                 if (!agent.isActiveAndEnabled) agent.enabled = true;
+
+                agent.speed = baseSpeed * patrollingSpeedModifier;
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .2f)
                 {
@@ -97,11 +109,14 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case States.Targeting:
-                if (prevState != state)
+                if (!playerStillDetected)
                 {
                     if (animator) animator.SetTrigger("PlayerDetected");
                     if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
+                    playerStillDetected = true;
                 }
+
+                agent.speed = baseSpeed;
 
                 if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance))
                 {
@@ -110,6 +125,7 @@ public class EnemyAI : MonoBehaviour
                         enemyToPlayerAngleX = Vector3.Angle(spotterOrigin.forward, new Vector3((player.position - spotterOrigin.position).x, 0, (player.position - spotterOrigin.position).z));
                         if (enemyToPlayerAngleX < maxVisibleAngleX && enemyToPlayerAngleX > -maxVisibleAngleX)
                         {
+                            playerStillDetected = true;
                             if (hitInfo.distance < .2f) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
                             lastKnownPlayerLocation = hitInfo.collider.transform.position;
@@ -153,8 +169,23 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
+        // Walking sound
+        if(agent.velocity.magnitude > 0 && footstepSounds == null)
+        {
+            footstepSounds = StartCoroutine(PlayFootstepSounds());
+        }
+
         // Update previous state
         prevState = state;
+    }
+
+    private IEnumerator PlayFootstepSounds()
+    {
+        yield return new WaitUntil(() => !audioSource.isPlaying);
+        audioSource.clip = footstepClips.Random();
+        audioSource.Play();
+        yield return new WaitForSeconds(agent.velocity.magnitude * .4f);
+        footstepSounds = null;
     }
 
     private void OnDrawGizmosSelected()
