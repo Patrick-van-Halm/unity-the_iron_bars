@@ -6,12 +6,15 @@ using UnityEngine;
 public class InventoryItem : Interactable
 {
     public Texture2D Image;
+    public AudioClip groundHitSound;
 
     private Rigidbody rb;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public virtual void Drop(Vector3 pos, Vector3 velocity)
@@ -24,6 +27,7 @@ public class InventoryItem : Interactable
     protected virtual void Pickup()
     {
         InventoryManager.Instance.PickupItem(this);
+        if (rb.isKinematic) rb.isKinematic = false;
         gameObject.SetActive(false);
     }
 
@@ -38,5 +42,10 @@ public class InventoryItem : Interactable
         }
 
         Pickup();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (audioSource && groundHitSound) audioSource.PlayOneShot(groundHitSound);
     }
 }

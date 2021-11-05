@@ -108,6 +108,13 @@ public class PlayerController : MonoBehaviour
 		velocity.y = -.5f;
 	}
 
+	public void Teleport(Vector3 position, Quaternion rotation)
+    {
+		cc.enabled = false;
+		transform.SetPositionAndRotation(position, rotation);
+		cc.enabled = true;
+    }
+
 	private void ProcessPlayerRotation()
 	{
 		if (canMove)

@@ -17,6 +17,8 @@ public class EnemyAI : MonoBehaviour
 
     public Transform[] patrollingWaypoints;
     public Transform spotterOrigin;
+    public Transform playerSpawn;
+    public LayerMask detectableLayers;
     public float maxVisibleAngleX;
     public float maxDoorDetectionAngleX;
     public float spotDistance = 5;
@@ -34,6 +36,9 @@ public class EnemyAI : MonoBehaviour
     private int waypointIndex = -1;
 
     private Transform player;
+    private PlayerController playerController;
+    private CharacterController playerCharacter;
+
     private Vector3 lastKnownPlayerLocation;
 
     private Coroutine ChangeStateCoroutine;
@@ -60,7 +65,10 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         state = States.Patrolling;
-        player = FindObjectOfType<PlayerController>().playerCamera.transform;
+        playerController = FindObjectOfType<PlayerController>();
+        player = playerController.playerCamera.transform;
+        playerCharacter = playerController.GetComponent<CharacterController>();
+
         audioSource.volume = .8f;
         baseSpeed = agent.speed;
     }
@@ -98,12 +106,12 @@ public class EnemyAI : MonoBehaviour
                     }
                 }
 
-                canHearPlayer = Physics.OverlapSphere(transform.position, hearingDistance).Any(c => c.CompareTag("Player") && !c.GetComponent<PlayerController>().isCrouched && c.GetComponent<CharacterController>().velocity.magnitude > .2f);
-
+                canHearPlayer = Physics.OverlapSphere(spotterOrigin.position, hearingDistance).Any(c => c.CompareTag("Player") && !playerController.isCrouched && playerCharacter.velocity.magnitude > 0f);
+                 print(canHearPlayer);
                 enemyToPlayerAngleX = Vector3.Angle(spotterOrigin.forward, new Vector3((player.position - spotterOrigin.position).x, 0, (player.position - spotterOrigin.position).z));
                 if ((enemyToPlayerAngleX > maxVisibleAngleX || enemyToPlayerAngleX < -maxVisibleAngleX) && !canHearPlayer) break;
 
-                if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance))
+                if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance, detectableLayers))
                 {
                     if (hitInfo.collider.CompareTag("Player")) 
                     {
@@ -123,18 +131,25 @@ public class EnemyAI : MonoBehaviour
 
                 agent.speed = baseSpeed;
 
-                canHearPlayer = Physics.OverlapSphere(transform.position, hearingDistance).Any(c => c.CompareTag("Player") && !c.GetComponent<PlayerController>().isCrouched && c.GetComponent<CharacterController>().velocity.magnitude > .2f);
+                canHearPlayer = Physics.OverlapSphere(spotterOrigin.position, hearingDistance).Any(c => c.CompareTag("Player") && !playerController.isCrouched && playerCharacter.velocity.magnitude > 0f);
+                print(canHearPlayer);
                 enemyToPlayerAngleX = Vector3.Angle(spotterOrigin.forward, new Vector3((player.position - spotterOrigin.position).x, 0, (player.position - spotterOrigin.position).z));
                 if ((enemyToPlayerAngleX > maxVisibleAngleX || enemyToPlayerAngleX < -maxVisibleAngleX) && !canHearPlayer) break;
 
-                if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance) || canHearPlayer)
+                if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance, detectableLayers) || canHearPlayer)
                 {
                     if ((hitInfo.collider && hitInfo.collider.CompareTag("Player")) || canHearPlayer)
                     {
                         playerStillDetected = true;
-                        if (Vector3.Distance(player.transform.position, transform.position) < agent.radius + .05f) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                        if (Vector3.Distance(player.position, spotterOrigin.position) < .8)
+                        {
+                            agent.SetDestination(transform.position);
+                            playerController.Teleport(playerSpawn.position, playerSpawn.rotation);
+                            ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
+                            break;
+                        }
 
-                        lastKnownPlayerLocation = player.transform.position;
+                        lastKnownPlayerLocation = player.position;
                         if (ChangeStateCoroutine != null)
                         {
                             StopCoroutine(ChangeStateCoroutine);
@@ -145,7 +160,7 @@ public class EnemyAI : MonoBehaviour
 
                 if (agent.destination != lastKnownPlayerLocation) agent.SetDestination(lastKnownPlayerLocation);
 
-                if (agent.isActiveAndEnabled && agent.remainingDistance < agent.radius + .05f)
+                if (agent.isActiveAndEnabled && agent.remainingDistance < .5)
                 {
                     ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
                 }
@@ -189,7 +204,7 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitUntil(() => !audioSource.isPlaying);
         audioSource.clip = footstepClips.Random();
         audioSource.Play();
-        yield return new WaitForSeconds(agent.velocity.magnitude * .4f);
+        yield return new WaitForSeconds(state == States.Targeting ? .3f : .5f);
         footstepSounds = null;
     }
 
