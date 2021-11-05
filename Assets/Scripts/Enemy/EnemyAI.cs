@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     public float maxVisibleAngleX;
     public float maxDoorDetectionAngleX;
     public float spotDistance = 5;
+    public float hearingDistance = 5;
     public float patrollingSpeedModifier = .75f;
 
     [Header("Audio")]
@@ -67,6 +69,7 @@ public class EnemyAI : MonoBehaviour
     {
         RaycastHit hitInfo;
         float enemyToPlayerAngleX;
+        bool canHearPlayer;
 
         switch (state)
         {
@@ -95,10 +98,12 @@ public class EnemyAI : MonoBehaviour
                     }
                 }
 
-                enemyToPlayerAngleX = Vector3.Angle(spotterOrigin.forward, new Vector3((player.position - spotterOrigin.position).x, 0, (player.position - spotterOrigin.position).z));
-                if (enemyToPlayerAngleX > maxVisibleAngleX || enemyToPlayerAngleX < -maxVisibleAngleX) break;
+                canHearPlayer = Physics.OverlapSphere(transform.position, hearingDistance).Any(c => c.CompareTag("Player") && !c.GetComponent<PlayerController>().isCrouched && c.GetComponent<CharacterController>().velocity.magnitude > .2f);
 
-                if(Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance))
+                enemyToPlayerAngleX = Vector3.Angle(spotterOrigin.forward, new Vector3((player.position - spotterOrigin.position).x, 0, (player.position - spotterOrigin.position).z));
+                if ((enemyToPlayerAngleX > maxVisibleAngleX || enemyToPlayerAngleX < -maxVisibleAngleX) && !canHearPlayer) break;
+
+                if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance))
                 {
                     if (hitInfo.collider.CompareTag("Player")) 
                     {
@@ -118,29 +123,29 @@ public class EnemyAI : MonoBehaviour
 
                 agent.speed = baseSpeed;
 
-                if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance))
-                {
-                    if (hitInfo.collider.CompareTag("Player"))
-                    {
-                        enemyToPlayerAngleX = Vector3.Angle(spotterOrigin.forward, new Vector3((player.position - spotterOrigin.position).x, 0, (player.position - spotterOrigin.position).z));
-                        if (enemyToPlayerAngleX < maxVisibleAngleX && enemyToPlayerAngleX > -maxVisibleAngleX)
-                        {
-                            playerStillDetected = true;
-                            if (hitInfo.distance < .2f) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                canHearPlayer = Physics.OverlapSphere(transform.position, hearingDistance).Any(c => c.CompareTag("Player") && !c.GetComponent<PlayerController>().isCrouched && c.GetComponent<CharacterController>().velocity.magnitude > .2f);
+                enemyToPlayerAngleX = Vector3.Angle(spotterOrigin.forward, new Vector3((player.position - spotterOrigin.position).x, 0, (player.position - spotterOrigin.position).z));
+                if ((enemyToPlayerAngleX > maxVisibleAngleX || enemyToPlayerAngleX < -maxVisibleAngleX) && !canHearPlayer) break;
 
-                            lastKnownPlayerLocation = hitInfo.collider.transform.position;
-                            if (ChangeStateCoroutine != null)
-                            {
-                                StopCoroutine(ChangeStateCoroutine);
-                                ChangeStateCoroutine = null;
-                            }
+                if (Physics.Raycast(spotterOrigin.position, player.position - spotterOrigin.position, out hitInfo, spotDistance) || canHearPlayer)
+                {
+                    if ((hitInfo.collider && hitInfo.collider.CompareTag("Player")) || canHearPlayer)
+                    {
+                        playerStillDetected = true;
+                        if (Vector3.Distance(player.transform.position, transform.position) < agent.radius + .05f) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+                        lastKnownPlayerLocation = player.transform.position;
+                        if (ChangeStateCoroutine != null)
+                        {
+                            StopCoroutine(ChangeStateCoroutine);
+                            ChangeStateCoroutine = null;
                         }
                     }
                 }                
 
                 if (agent.destination != lastKnownPlayerLocation) agent.SetDestination(lastKnownPlayerLocation);
 
-                if (agent.isActiveAndEnabled && agent.remainingDistance < 1)
+                if (agent.isActiveAndEnabled && agent.remainingDistance < agent.radius + .05f)
                 {
                     ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
                 }

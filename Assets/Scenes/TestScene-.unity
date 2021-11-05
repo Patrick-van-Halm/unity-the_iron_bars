@@ -1778,6 +1778,52 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.009999998, z: 0.009999997}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1163308066 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1319380215876546549, guid: 477f31791310c224e88712647c212424, type: 3}
+  m_PrefabInstance: {fileID: 2201706618285282897}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1163308068 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2201706618167240026, guid: 477f31791310c224e88712647c212424, type: 3}
+  m_PrefabInstance: {fileID: 2201706618285282897}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163308066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8de24fb06119e499175d77d98cddac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1163308073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163308066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff8cfae7fa2d01f4ebf8ae964a4d60fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialState: 1
+  stateChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1163308068}
+        m_TargetAssemblyTypeName: SlidingDoor, Assembly-CSharp
+        m_MethodName: SlideDoor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  lockedIcon: {fileID: 2800000, guid: 52f246fe78e71914d838dea411971337, type: 3}
+  unlockedIcon: {fileID: 2800000, guid: e2a3def44f3e351468f34e4da1e26e16, type: 3}
 --- !u!1 &1243891321
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,6 +2719,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
+      propertyPath: patrollingWaypoints.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3159323459192016564, guid: 2efca4a98fbad474b82345566d9a202b, type: 3}
       propertyPath: patrollingWaypoints.Array.data[0]
       value: 
