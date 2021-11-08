@@ -24,7 +24,12 @@ public class GuardAI : EnemyAI
 
             case States.Patrolling:
                 playerStillDetected = false;
-                if (!agent.isActiveAndEnabled) agent.enabled = true;
+                if (!agent.isActiveAndEnabled)
+                {
+                    agent.enabled = true;
+                    if (waypointIndex == -1) waypointIndex = 0;
+                    agent.SetDestination(patrollingWaypoints[waypointIndex].position);
+                }
 
                 agent.speed = baseSpeed * patrollingSpeedModifier;
 
@@ -62,13 +67,12 @@ public class GuardAI : EnemyAI
                 {
                     if (Vector3.Distance(player.position, spotterOrigin.position) < .8)
                     {
-                        agent.SetDestination(patrollingWaypoints[waypointIndex].position);
-                        playerController.Teleport(playerSpawn.position, playerSpawn.rotation);
                         agent.enabled = false;
-                        transform.position = patrollingWaypoints[waypointIndex].position;
-                        agent.enabled = true;
+                        playerController.Teleport(playerSpawn.position, playerSpawn.rotation);
+                        transform.position = patrollingWaypoints[0].position;
+                        lastKnownPlayerLocation = Vector3.zero;
                         if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
-                        break;
+                        return;
                     }
 
                     lastKnownPlayerLocation = pos;
@@ -79,7 +83,7 @@ public class GuardAI : EnemyAI
                     }
                 }
 
-                if (agent.destination != lastKnownPlayerLocation) agent.SetDestination(lastKnownPlayerLocation);
+                if (agent.isActiveAndEnabled && agent.destination != lastKnownPlayerLocation) agent.SetDestination(lastKnownPlayerLocation);
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .5)
                 {
