@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3159323459192016566}
   - component: {fileID: 3159323459192016567}
-  - component: {fileID: 3159323459192016564}
   - component: {fileID: 8935952171145848526}
   - component: {fileID: 2033271248}
+  - component: {fileID: 7302251972260361215}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -58,34 +58,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3159323459192016564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3159323459192016565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bd39de10e751df49b7eb19d94da70f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrollingWaypoints: []
-  spotterOrigin: {fileID: 3159323460871270491}
-  playerSpawn: {fileID: 0}
-  detectableLayers:
-    serializedVersion: 2
-    m_Bits: 51
-  maxVisibleAngleX: 45
-  maxDoorDetectionAngleX: 50
-  spotDistance: 8
-  hearingDistance: 3
-  patrollingSpeedModifier: 0.75
-  soundDetectionClip: {fileID: 8300000, guid: 31fe05fbf7ba96a47b802eb9e864f094, type: 3}
-  footstepClips:
-  - {fileID: 8300000, guid: 7bd4623ec87d04f4dbbd3cfe00828576, type: 3}
-  - {fileID: 8300000, guid: 1b000905aee1f2e40bbeaaba2a3aba7a, type: 3}
-  - {fileID: 8300000, guid: 33b17a8b15f0fd749967b0f3a9972e54, type: 3}
 --- !u!82 &8935952171145848526
 AudioSource:
   m_ObjectHideFlags: 0
@@ -201,6 +173,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7302251972260361215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3159323459192016565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdbb37a123fefb46918367c8ea9894e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrollingWaypoints: []
+  spotterOrigin: {fileID: 3159323460871270491}
+  playerSpawn: {fileID: 0}
+  detectableLayers:
+    serializedVersion: 2
+    m_Bits: 51
+  maxVisibleAngleX: 50
+  maxDoorDetectionAngleX: 60
+  spotDistance: 5
+  hearingDistance: 8
+  patrollingSpeedModifier: 0.75
+  soundDetectionClip: {fileID: 8300000, guid: 31fe05fbf7ba96a47b802eb9e864f094, type: 3}
+  footstepClips:
+  - {fileID: 8300000, guid: 7bd4623ec87d04f4dbbd3cfe00828576, type: 3}
+  - {fileID: 8300000, guid: 1b000905aee1f2e40bbeaaba2a3aba7a, type: 3}
+  - {fileID: 8300000, guid: 33b17a8b15f0fd749967b0f3a9972e54, type: 3}
 --- !u!1 &3159323459196709422
 GameObject:
   m_ObjectHideFlags: 0
