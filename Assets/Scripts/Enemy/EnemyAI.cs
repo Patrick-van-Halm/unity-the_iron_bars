@@ -143,8 +143,11 @@ public class EnemyAI : MonoBehaviour
                         playerStillDetected = true;
                         if (Vector3.Distance(player.position, spotterOrigin.position) < .8)
                         {
-                            agent.SetDestination(transform.position);
+                            agent.SetDestination(patrollingWaypoints[waypointIndex].position);
                             playerController.Teleport(playerSpawn.position, playerSpawn.rotation);
+                            agent.enabled = false;
+                            transform.position = patrollingWaypoints[waypointIndex].position;
+                            agent.enabled = true;
                             ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
                             break;
                         }
