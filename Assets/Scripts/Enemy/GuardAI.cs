@@ -18,7 +18,7 @@ public class GuardAI : EnemyAI
         {
             case States.Idle:
                 agent.enabled = false;
-                ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(1, 5), States.Patrolling));
+                if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(1, 5), States.Patrolling));
                 StartCoroutine(IdleTimeout());
                 break;
 
@@ -31,7 +31,7 @@ public class GuardAI : EnemyAI
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .2f)
                 {
                     if (idleTimeoutEnded && Random.Range(0, 100) < 50)
-                        ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
+                        if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
                     else
                     {
                         if (waypointIndex == patrollingWaypoints.Length - 1) waypointIndex = -1;
@@ -44,7 +44,7 @@ public class GuardAI : EnemyAI
                 if (DetectPlayer(false, out pos))
                 {
                     lastKnownPlayerLocation = pos;
-                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
+                    if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
                 }
                 break;
 
@@ -67,7 +67,7 @@ public class GuardAI : EnemyAI
                         agent.enabled = false;
                         transform.position = patrollingWaypoints[waypointIndex].position;
                         agent.enabled = true;
-                        ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
+                        if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
                         break;
                     }
 
@@ -83,7 +83,7 @@ public class GuardAI : EnemyAI
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .5)
                 {
-                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
+                    if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
                 }
                 break;
         }

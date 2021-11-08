@@ -20,13 +20,13 @@ public class WardenAI : EnemyAI
             case States.Idle:
                 agent.enabled = false;
                 isWalkingToOffice = false;
-                ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(20, 30), States.Patrolling));
+                if(ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(20, 30), States.Patrolling));
 
                 if (DetectPlayer(false, out pos))
                 {
                     agent.enabled = true;
                     lastKnownPlayerLocation = pos;
-                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
+                    if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
                 }
                 break;
 
@@ -38,7 +38,7 @@ public class WardenAI : EnemyAI
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .2f)
                 {
-                    if (isWalkingToOffice) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
+                    if (isWalkingToOffice && ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
                     else
                     {
                         if (waypointIndex == patrollingWaypoints.Length - 1)
@@ -56,7 +56,7 @@ public class WardenAI : EnemyAI
                 if (DetectPlayer(false, out pos))
                 {
                     lastKnownPlayerLocation = pos;
-                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
+                    if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
                 }
                 break;
 
@@ -79,7 +79,7 @@ public class WardenAI : EnemyAI
                         agent.enabled = false;
                         transform.position = patrollingWaypoints[waypointIndex].position;
                         agent.enabled = true;
-                        ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
+                        if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
                         break;
                     }
 
@@ -95,7 +95,7 @@ public class WardenAI : EnemyAI
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .5)
                 {
-                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
+                    if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
                 }
                 break;
         }

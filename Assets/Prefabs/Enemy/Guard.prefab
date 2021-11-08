@@ -193,8 +193,8 @@ MonoBehaviour:
     m_Bits: 51
   maxVisibleAngleX: 50
   maxDoorDetectionAngleX: 60
-  spotDistance: 5
-  hearingDistance: 8
+  spotDistance: 8
+  hearingDistance: 6
   patrollingSpeedModifier: 0.75
   soundDetectionClip: {fileID: 8300000, guid: 31fe05fbf7ba96a47b802eb9e864f094, type: 3}
   footstepClips:
