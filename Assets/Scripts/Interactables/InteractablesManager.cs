@@ -39,6 +39,13 @@ public class InteractablesManager : MonoBehaviour
         iconElement.texture = interactableDefaultIcon;
     }
 
+    public void ResetIconAndTextAfterSeconds(float seconds) => StartCoroutine(ResetIconAndTextAfterSecondsCoro(seconds));
+    private IEnumerator ResetIconAndTextAfterSecondsCoro(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        InteractablesManager.Instance.ChangeToDefaultIconAndText();
+    }
+
     public void Show(bool a)
     {
         ChangeToDefaultIconAndText();
