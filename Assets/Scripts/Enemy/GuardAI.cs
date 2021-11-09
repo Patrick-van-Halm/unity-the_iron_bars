@@ -33,7 +33,7 @@ public class GuardAI : EnemyAI
 
                 agent.speed = baseSpeed * patrollingSpeedModifier;
 
-                if (agent.isActiveAndEnabled && agent.remainingDistance < .2f)
+                if (agent.isActiveAndEnabled && agent.remainingDistance < .2f && ChangeStateCoroutine == null)
                 {
                     if (idleTimeoutEnded && Random.Range(0, 100) < 50)
                         if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
@@ -48,19 +48,15 @@ public class GuardAI : EnemyAI
 
                 if (DetectPlayer(false, out pos) && ChangeStateCoroutine == null)
                 {
+                    agent.SetDestination(transform.position);
                     lastKnownPlayerLocation = pos;
                     ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(1.5f, States.Targeting));
+                    if (animator) animator.SetTrigger("PlayerDetected");
+                    if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
                 }
                 break;
 
             case States.Targeting:
-                if (!playerStillDetected && state != prevState)
-                {
-                    if (animator) animator.SetTrigger("PlayerDetected");
-                    if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
-                    playerStillDetected = true;
-                }
-
                 agent.speed = baseSpeed;
 
                 if (DetectPlayer(true, out pos))
