@@ -46,10 +46,10 @@ public class GuardAI : EnemyAI
                     }
                 }
 
-                if (DetectPlayer(false, out pos))
+                if (DetectPlayer(false, out pos) && ChangeStateCoroutine == null)
                 {
                     lastKnownPlayerLocation = pos;
-                    if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
+                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(1.5f, States.Targeting));
                 }
                 break;
 
