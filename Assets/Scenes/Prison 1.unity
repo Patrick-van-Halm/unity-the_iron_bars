@@ -6344,6 +6344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovableDoor (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2201706619797491606, guid: 477f31791310c224e88712647c212424, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 5499dbc19f78d3842ba12a86646fe1a5, type: 2}
     - target: {fileID: 2201706619797491607, guid: 477f31791310c224e88712647c212424, type: 3}
       propertyPath: m_RootOrder
       value: 41
