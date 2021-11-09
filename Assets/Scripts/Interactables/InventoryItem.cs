@@ -27,7 +27,11 @@ public class InventoryItem : Interactable
     protected virtual void Pickup()
     {
         InventoryManager.Instance.PickupItem(this);
-        if (rb.isKinematic) rb.isKinematic = false;
+        if (rb.isKinematic)
+        {
+            rb.isKinematic = false;
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        }
         gameObject.SetActive(false);
     }
 
