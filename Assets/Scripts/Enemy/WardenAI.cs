@@ -31,7 +31,6 @@ public class WardenAI : EnemyAI
                 break;
 
             case States.Patrolling:
-                playerStillDetected = false;
                 if (!agent.isActiveAndEnabled) agent.enabled = true;
 
                 agent.speed = baseSpeed * patrollingSpeedModifier;
@@ -53,21 +52,16 @@ public class WardenAI : EnemyAI
                     }
                 }
 
-                if (DetectPlayer(false, out pos))
+                if (DetectPlayer(false, out pos) && ChangeStateCoroutine == null)
                 {
                     lastKnownPlayerLocation = pos;
                     if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
+                    if (animator) animator.SetTrigger("PlayerDetected");
+                    if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
                 }
                 break;
 
             case States.Targeting:
-                if (!playerStillDetected && state != prevState)
-                {
-                    if (animator) animator.SetTrigger("PlayerDetected");
-                    if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
-                    playerStillDetected = true;
-                }
-
                 agent.speed = baseSpeed;
 
                 if (DetectPlayer(true, out pos))

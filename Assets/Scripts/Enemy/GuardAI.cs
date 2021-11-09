@@ -9,6 +9,7 @@ public class GuardAI : EnemyAI
 {
     private float idleTimeout = 15;
     private bool idleTimeoutEnded = true;
+    private Coroutine idleTimeoutCoro;
 
     protected override void HandleStates()
     {
@@ -19,11 +20,10 @@ public class GuardAI : EnemyAI
             case States.Idle:
                 agent.enabled = false;
                 if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(1, 5), States.Patrolling));
-                StartCoroutine(IdleTimeout());
+                if (idleTimeoutCoro == null) idleTimeoutCoro = StartCoroutine(IdleTimeout());
                 break;
 
             case States.Patrolling:
-                playerStillDetected = false;
                 if (!agent.isActiveAndEnabled)
                 {
                     agent.enabled = true;
@@ -33,14 +33,16 @@ public class GuardAI : EnemyAI
 
                 agent.speed = baseSpeed * patrollingSpeedModifier;
 
-                if (agent.isActiveAndEnabled && agent.remainingDistance < .2f && ChangeStateCoroutine == null)
+                if (agent.isActiveAndEnabled && agent.remainingDistance < .5f && ChangeStateCoroutine == null)
                 {
                     if (idleTimeoutEnded && Random.Range(0, 100) < 50)
+                    {
                         if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
+                    }
                     else
                     {
-                        if (waypointIndex == patrollingWaypoints.Length - 1) waypointIndex = -1;
                         waypointIndex += 1;
+                        if (waypointIndex >= patrollingWaypoints.Length) waypointIndex = 0;
 
                         agent.SetDestination(patrollingWaypoints[waypointIndex].position);
                     }
@@ -50,7 +52,7 @@ public class GuardAI : EnemyAI
                 {
                     agent.SetDestination(transform.position);
                     lastKnownPlayerLocation = pos;
-                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(1.5f, States.Targeting));
+                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
                     if (animator) animator.SetTrigger("PlayerDetected");
                     if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
                 }
@@ -93,5 +95,6 @@ public class GuardAI : EnemyAI
         idleTimeoutEnded = false;
         yield return new WaitForSeconds(idleTimeout);
         idleTimeoutEnded = true;
+        idleTimeoutCoro = null;
     }
 }

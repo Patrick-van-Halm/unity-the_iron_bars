@@ -43,8 +43,6 @@ public abstract class EnemyAI : MonoBehaviour
 
     protected Coroutine ChangeStateCoroutine;
 
-    protected bool playerStillDetected = true;
-
     protected float baseSpeed;
 
     private Door openedDoor;
