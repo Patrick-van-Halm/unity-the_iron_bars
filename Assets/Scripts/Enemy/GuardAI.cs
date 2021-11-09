@@ -69,6 +69,7 @@ public class GuardAI : EnemyAI
                         playerController.Teleport(playerSpawn.position, playerSpawn.rotation);
                         transform.position = patrollingWaypoints[0].position;
                         lastKnownPlayerLocation = Vector3.zero;
+                        CloseOpenedDoor();
                         if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
                         return;
                     }

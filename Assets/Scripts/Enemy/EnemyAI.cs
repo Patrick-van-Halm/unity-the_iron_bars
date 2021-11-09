@@ -105,10 +105,16 @@ public abstract class EnemyAI : MonoBehaviour
 
             if (enemyToOpenedDoorAngleX < maxDoorDetectionAngleX && enemyToOpenedDoorAngleX > -maxDoorDetectionAngleX && new Vector3((openedDoor.transform.position - spotterOrigin.position).x, 0, (openedDoor.transform.position - spotterOrigin.position).z).magnitude > 1f)
             {
-                if (openedDoor.State == Door.States.Open && openedDoor.initialState == Door.States.Closed) openedDoor.SetDoor(false);
-                openedDoor = null;
+                CloseOpenedDoor();
             }
         }
+    }
+
+    protected void CloseOpenedDoor()
+    {
+        if (!openedDoor) return;
+        if (openedDoor.State == Door.States.Open && openedDoor.initialState == Door.States.Closed) openedDoor.SetDoor(false);
+        openedDoor = null;
     }
 
     protected bool DetectPlayer(bool isAllowedToHear, out Vector3 position)
