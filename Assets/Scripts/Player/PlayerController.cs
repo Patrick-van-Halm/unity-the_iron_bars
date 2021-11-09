@@ -198,7 +198,7 @@ public class PlayerController : MonoBehaviour
         {
 			var puzzles = FindObjectsOfType<Puzzle2D>().Where(p => p.IsOpen).ToArray();
 			for (int i = 0; i < puzzles.Length; i++) puzzles[i].Toggle();
-
+			InteractablesManager.Instance?.noteScreen?.Active(false);
 			SettingsMenu.SetActive(!SettingsMenu.activeSelf);
 			SetCanMove(!SettingsMenu.activeSelf);
         }
