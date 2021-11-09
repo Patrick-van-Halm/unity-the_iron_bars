@@ -46,7 +46,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 4.5
   m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 90
@@ -191,11 +191,11 @@ MonoBehaviour:
   detectableLayers:
     serializedVersion: 2
     m_Bits: 51
-  maxVisibleAngleX: 50
+  maxVisibleAngleX: 40
   maxDoorDetectionAngleX: 60
-  spotDistance: 8
-  hearingDistance: 6
-  patrollingSpeedModifier: 0.75
+  spotDistance: 6
+  hearingDistance: 4
+  patrollingSpeedModifier: 0.6
   soundDetectionClip: {fileID: 8300000, guid: 31fe05fbf7ba96a47b802eb9e864f094, type: 3}
   footstepClips:
   - {fileID: 8300000, guid: 7bd4623ec87d04f4dbbd3cfe00828576, type: 3}
