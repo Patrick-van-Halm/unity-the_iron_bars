@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using System;
+using Extensions;
 
 public class Wires : Puzzle2D
 {
@@ -22,6 +24,20 @@ public class Wires : Puzzle2D
     protected override void Start()
     {
         base.Start();
+
+        GeneratePuzzle();
+    }
+
+    private void ClearPuzzle()
+    {
+        startNodes.DeleteChildren();
+        endNodes.DeleteChildren();
+        wireImages.DeleteChildren();
+    }
+
+    public void GeneratePuzzle()
+    {
+        ClearPuzzle();
 
         var rng = new System.Random();
         wireCount = rng.Next(minWireCount, colors.Count);
