@@ -17,7 +17,7 @@ public abstract class EnemyAI : MonoBehaviour
 
     public Transform[] patrollingWaypoints;
     public Transform spotterOrigin;
-    public Transform playerSpawn;
+    public Transform playerTeleportTo;
     public LayerMask detectableLayers;
     public float maxVisibleAngleX;
     public float maxDoorDetectionAngleX;

@@ -19,8 +19,16 @@ public class GuardAI : EnemyAI
         {
             case States.Idle:
                 agent.enabled = false;
-                if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(1, 5), States.Patrolling));
-                if (idleTimeoutCoro == null) idleTimeoutCoro = StartCoroutine(IdleTimeout());
+                if (ChangeStateCoroutine == null && patrollingWaypoints.Length > 1) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(Random.Range(1, 5), States.Patrolling));
+                if (idleTimeoutCoro == null && patrollingWaypoints.Length > 1) idleTimeoutCoro = StartCoroutine(IdleTimeout());
+                if (DetectPlayer(true, out pos) && ChangeStateCoroutine == null)
+                {
+                    agent.SetDestination(transform.position);
+                    lastKnownPlayerLocation = pos;
+                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
+                    if (animator) animator.SetTrigger("PlayerDetected");
+                    if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
+                }
                 break;
 
             case States.Patrolling:
@@ -35,7 +43,7 @@ public class GuardAI : EnemyAI
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .5f && ChangeStateCoroutine == null)
                 {
-                    if (idleTimeoutEnded && Random.Range(0, 100) < 50)
+                    if ((idleTimeoutEnded && Random.Range(0, 100) < 50) || patrollingWaypoints.Length == 1)
                     {
                         if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
                     }
@@ -66,11 +74,12 @@ public class GuardAI : EnemyAI
                     if (Vector3.Distance(player.position, spotterOrigin.position) < .8)
                     {
                         agent.enabled = false;
-                        playerController.Teleport(playerSpawn.position, playerSpawn.rotation);
+                        playerController.Teleport(playerTeleportTo.position, playerTeleportTo.rotation);
                         transform.position = patrollingWaypoints[0].position;
                         lastKnownPlayerLocation = Vector3.zero;
                         CloseOpenedDoor();
-                        if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
+                        if (ChangeStateCoroutine == null && patrollingWaypoints.Length > 0) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
+                        else if(ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Idle));
                         return;
                     }
 
@@ -86,7 +95,8 @@ public class GuardAI : EnemyAI
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .5)
                 {
-                    if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
+                    if (ChangeStateCoroutine == null && patrollingWaypoints.Length > 0) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(2f, States.Patrolling));
+                    else if(ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Idle));
                 }
                 break;
         }

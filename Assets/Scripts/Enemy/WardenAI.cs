@@ -69,7 +69,7 @@ public class WardenAI : EnemyAI
                     if (Vector3.Distance(player.position, spotterOrigin.position) < .8)
                     {
                         agent.SetDestination(patrollingWaypoints[waypointIndex].position);
-                        playerController.Teleport(playerSpawn.position, playerSpawn.rotation);
+                        playerController.Teleport(playerTeleportTo.position, playerTeleportTo.rotation);
                         agent.enabled = false;
                         transform.position = patrollingWaypoints[waypointIndex].position;
                         agent.enabled = true;
