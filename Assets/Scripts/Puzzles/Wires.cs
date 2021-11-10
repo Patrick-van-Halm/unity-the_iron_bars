@@ -33,8 +33,6 @@ public class Wires : Puzzle2D
         startNodes.DeleteChildren();
         endNodes.DeleteChildren();
         wireImages.DeleteChildren();
-        wires = null;
-        grid = null;
     }
 
     public void GeneratePuzzle()

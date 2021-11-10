@@ -8,9 +8,9 @@ namespace Extensions
     {
         static public void DeleteChildren(this Transform t)
         {
-            for(int i = 0; i < t.childCount; i++)
+            for(int i = t.childCount - 1; i >= 0; i--)
             {
-                Object.Destroy(t.GetChild(i).gameObject);
+                Object.DestroyImmediate(t.GetChild(i).gameObject);
             }
         }
     }
