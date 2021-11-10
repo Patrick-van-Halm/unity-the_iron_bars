@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class WardenAI : EnemyAI
 {
+    public UnityEvent onPlayerCaptured = new UnityEvent();
     public Transform officeWaypoint;
 
     private bool isWalkingToOffice;
@@ -73,6 +75,7 @@ public class WardenAI : EnemyAI
                         agent.enabled = false;
                         transform.position = patrollingWaypoints[waypointIndex].position;
                         agent.enabled = true;
+                        onPlayerCaptured?.Invoke();
                         if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0f, States.Patrolling));
                         break;
                     }
