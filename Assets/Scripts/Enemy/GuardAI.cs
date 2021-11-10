@@ -51,7 +51,7 @@ public class GuardAI : EnemyAI
 
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .5f && ChangeStateCoroutine == null)
                 {
-                    if ((idleTimeoutEnded && Random.Range(0, 100) < 50) || patrollingWaypoints.Length == 1)
+                    if ((patrollingWaypoints.Length > 1 && idleTimeoutEnded && Random.Range(0, 100) < 50) || (patrollingWaypoints.Length == 1 && Vector3.Distance(transform.position, patrollingWaypoints[0].position) < .3f))
                     {
                         if (ChangeStateCoroutine == null) ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(0, States.Idle));
                     }
