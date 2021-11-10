@@ -17,7 +17,7 @@ public abstract class Puzzle2D : Interactable
     [Header("Puzzle2D Events")]
     public UnityEvent OnPuzzleFinished;
 
-    public PuzzleState PuzzleState { get; private set; }
+    public PuzzleState PuzzleState { get; protected set; }
     public bool IsOpen => canvas.activeSelf;
 
     private PlayerController controller;

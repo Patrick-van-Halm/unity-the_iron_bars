@@ -37,6 +37,7 @@ public class Wires : Puzzle2D
 
     public void GeneratePuzzle()
     {
+        PuzzleState = PuzzleState.NotStarted;
         ClearPuzzle();
 
         var rng = new System.Random();
@@ -112,7 +113,7 @@ public class Wires : Puzzle2D
 
     private void Update()
     {
-        if (PuzzleState == PuzzleState.Finished) return;
+        if (PuzzleState != PuzzleState.Started) return;
 
         if(wires.Any(w => w.IsHolding))
         {
