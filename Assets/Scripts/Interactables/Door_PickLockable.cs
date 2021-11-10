@@ -15,7 +15,7 @@ public class Door_PickLockable : Door
 
         if (isLocked && !picklock)
         {
-            SetIconAndText(lockedIcon, "Door is locked.");
+            SetIconAndText(lockedIcon, "This door needs to be Picklocked");
             return;
         }
         else if (isLocked && picklock)
