@@ -23,7 +23,6 @@ public class GuardAI : EnemyAI
                 if (idleTimeoutCoro == null && patrollingWaypoints.Length > 1) idleTimeoutCoro = StartCoroutine(IdleTimeout());
                 if (DetectPlayer(true, out pos) && ChangeStateCoroutine == null)
                 {
-                    agent.SetDestination(transform.position);
                     lastKnownPlayerLocation = pos;
                     ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
                     if (animator) animator.SetTrigger("PlayerDetected");
@@ -41,6 +40,15 @@ public class GuardAI : EnemyAI
 
                 agent.speed = baseSpeed * patrollingSpeedModifier;
 
+                if (DetectPlayer(patrollingWaypoints.Length == 1, out pos) && ChangeStateCoroutine == null)
+                {
+                    agent.SetDestination(transform.position);
+                    lastKnownPlayerLocation = pos;
+                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
+                    if (animator) animator.SetTrigger("PlayerDetected");
+                    if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
+                }
+
                 if (agent.isActiveAndEnabled && agent.remainingDistance < .5f && ChangeStateCoroutine == null)
                 {
                     if ((idleTimeoutEnded && Random.Range(0, 100) < 50) || patrollingWaypoints.Length == 1)
@@ -55,18 +63,10 @@ public class GuardAI : EnemyAI
                         agent.SetDestination(patrollingWaypoints[waypointIndex].position);
                     }
                 }
-
-                if (DetectPlayer(false, out pos) && ChangeStateCoroutine == null)
-                {
-                    agent.SetDestination(transform.position);
-                    lastKnownPlayerLocation = pos;
-                    ChangeStateCoroutine = StartCoroutine(ChangeStateAfterSeconds(.5f, States.Targeting));
-                    if (animator) animator.SetTrigger("PlayerDetected");
-                    if (audioSource && soundDetectionClip) audioSource.PlayOneShot(soundDetectionClip);
-                }
                 break;
 
             case States.Targeting:
+                if (!agent.isActiveAndEnabled) agent.enabled = true;
                 agent.speed = baseSpeed;
 
                 if (DetectPlayer(true, out pos))
