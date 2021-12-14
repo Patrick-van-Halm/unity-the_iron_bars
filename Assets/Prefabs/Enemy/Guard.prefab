@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3159323459192016566}
   - component: {fileID: 3159323459192016567}
-  - component: {fileID: 3159323459192016564}
   - component: {fileID: 8935952171145848526}
   - component: {fileID: 2033271248}
+  - component: {fileID: 7302251972260361215}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -46,7 +46,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 4.5
   m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 90
@@ -58,28 +58,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3159323459192016564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3159323459192016565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bd39de10e751df49b7eb19d94da70f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrollingWaypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  spotterOrigin: {fileID: 3159323460871270491}
-  maxVisibleAngleX: 40
-  maxDoorDetectionAngleX: 50
-  spotDistance: 4
-  soundDetectionClip: {fileID: 8300000, guid: 31fe05fbf7ba96a47b802eb9e864f094, type: 3}
 --- !u!82 &8935952171145848526
 AudioSource:
   m_ObjectHideFlags: 0
@@ -91,7 +69,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -99,9 +77,9 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1.554874
-  MaxDistance: 500
+  DopplerLevel: 0.23
+  MinDistance: 0.1
+  MaxDistance: 5
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -136,7 +114,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -195,6 +173,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7302251972260361215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3159323459192016565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdbb37a123fefb46918367c8ea9894e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrollingWaypoints: []
+  spotterOrigin: {fileID: 3159323460871270491}
+  playerTeleportTo: {fileID: 0}
+  detectableLayers:
+    serializedVersion: 2
+    m_Bits: 51
+  maxVisibleAngleX: 40
+  maxDoorDetectionAngleX: 60
+  spotDistance: 6
+  hearingDistance: 4
+  patrollingSpeedModifier: 0.6
+  soundDetectionClip: {fileID: 8300000, guid: 31fe05fbf7ba96a47b802eb9e864f094, type: 3}
+  footstepClips:
+  - {fileID: 8300000, guid: 7bd4623ec87d04f4dbbd3cfe00828576, type: 3}
+  - {fileID: 8300000, guid: 1b000905aee1f2e40bbeaaba2a3aba7a, type: 3}
+  - {fileID: 8300000, guid: 33b17a8b15f0fd749967b0f3a9972e54, type: 3}
 --- !u!1 &3159323459196709422
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +213,7 @@ GameObject:
   - component: {fileID: 3159323459196709429}
   - component: {fileID: 3159323459196709418}
   - component: {fileID: 3159323459196709419}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +312,7 @@ GameObject:
   - component: {fileID: 3159323459402392773}
   - component: {fileID: 3159323459402392826}
   - component: {fileID: 3159323459402392827}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,7 +407,7 @@ GameObject:
   - component: {fileID: 3159323459779841635}
   - component: {fileID: 3159323459779841632}
   - component: {fileID: 3159323459779841633}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -496,7 +502,7 @@ GameObject:
   - component: {fileID: 3159323460465404967}
   - component: {fileID: 3159323460465404964}
   - component: {fileID: 3159323460465404965}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -8,20 +8,20 @@ public class Door_PickLockable : Door
     public Texture2D unlockedIcon;
 
     private bool isLocked = true;
-    private bool hasPicklock = false;
 
     protected override void Interact()
     {
-        hasPicklock = InventoryManager.Instance.Item is Item_Picklock;
+        var picklock = InventoryManager.Instance.Item as Item_Picklock;
 
-        if (isLocked && !hasPicklock)
+        if (isLocked && !picklock)
         {
-            SetIconAndText(lockedIcon, "Door is locked.");
+            SetIconAndText(lockedIcon, "This door needs to be Picklocked");
             return;
         }
-        else if (hasPicklock)
+        else if (isLocked && picklock)
         {
-            InventoryManager.Instance.DestroyItem();
+            picklock.Use();
+            if (picklock.Uses >= picklock.maxUses) InventoryManager.Instance.DestroyItem();
             ChangeLockState(false);
             SetIconAndText(unlockedIcon, "Door has been unlocked.");
             ResetIconAndTextAfterSeconds(1);

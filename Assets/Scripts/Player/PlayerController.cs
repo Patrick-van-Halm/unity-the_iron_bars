@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
 	public bool isPrimaryInteracting;
 	public bool isDropping;
 	public bool isSecondaryInteractingToggled;
+	public bool isSettingsPressed;
 
 	private bool canMove = true;
 	private CharacterController cc;
@@ -105,6 +107,13 @@ public class PlayerController : MonoBehaviour
 		}
 		velocity.y = -.5f;
 	}
+
+	public void Teleport(Vector3 position, Quaternion rotation)
+    {
+		cc.enabled = false;
+		transform.SetPositionAndRotation(position, rotation);
+		cc.enabled = true;
+    }
 
 	private void ProcessPlayerRotation()
 	{
@@ -185,8 +194,11 @@ public class PlayerController : MonoBehaviour
 
 	public void OnSettings(InputValue value)
 	{
-        if (value.isPressed)
+		if (value.isPressed)
         {
+			var puzzles = FindObjectsOfType<Puzzle2D>().Where(p => p.IsOpen).ToArray();
+			for (int i = 0; i < puzzles.Length; i++) puzzles[i].Toggle();
+			InteractablesManager.Instance?.noteScreen?.Active(false);
 			SettingsMenu.SetActive(!SettingsMenu.activeSelf);
 			SetCanMove(!SettingsMenu.activeSelf);
         }

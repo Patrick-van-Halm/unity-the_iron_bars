@@ -27,13 +27,7 @@ public abstract class Interactable : MonoBehaviour, IRaycastable3D
             rendererMaterials.Add(renderers[i], renderers[i].materials);
         }
     }
-    protected void ResetIconAndTextAfterSeconds(float seconds) => StartCoroutine(ResetIconAndTextAfterSecondsCoro(seconds));
-    private IEnumerator ResetIconAndTextAfterSecondsCoro(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        InteractablesManager.Instance.ChangeToDefaultIconAndText();
-    }
-
+    protected void ResetIconAndTextAfterSeconds(float seconds) => InteractablesManager.Instance.ResetIconAndTextAfterSeconds(seconds);
     protected abstract void Interact();
     public void SetIconAndText(Texture2D icon, string text) => InteractablesManager.Instance.SetIconAndText(icon, text);
     public virtual void OnRaycastEnter(RaycastHit hit)

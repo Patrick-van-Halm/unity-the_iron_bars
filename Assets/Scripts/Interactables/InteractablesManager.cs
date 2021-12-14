@@ -10,6 +10,7 @@ public class InteractablesManager : MonoBehaviour
     
     public GameObject display;
     public Texture2D interactableDefaultIcon;
+    public NoteScreen noteScreen;
     public PlayerInputs input;
 
     private TMP_Text textElement;
@@ -36,6 +37,13 @@ public class InteractablesManager : MonoBehaviour
     {
         textElement.text = "Press [" + input.CharacterControls.Interact.controls[0].displayName.ToUpper() + "] to interact.";
         iconElement.texture = interactableDefaultIcon;
+    }
+
+    public void ResetIconAndTextAfterSeconds(float seconds) => StartCoroutine(ResetIconAndTextAfterSecondsCoro(seconds));
+    private IEnumerator ResetIconAndTextAfterSecondsCoro(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        InteractablesManager.Instance.ChangeToDefaultIconAndText();
     }
 
     public void Show(bool a)

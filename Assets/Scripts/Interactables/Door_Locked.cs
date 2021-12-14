@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Door_Locked : Door
 {
     public Texture2D lockedIcon;
+    public UnityEvent<bool> onLockstateChange;
 
     private bool isLocked = true;
 
@@ -24,5 +26,6 @@ public class Door_Locked : Door
     public void ChangeLockState(bool isLocked)
     {
         this.isLocked = isLocked;
+        onLockstateChange?.Invoke(isLocked);
     }
 }

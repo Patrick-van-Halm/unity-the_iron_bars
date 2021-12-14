@@ -16,7 +16,7 @@ public class Door_Locked_Key : Door
 
         if (isLocked && !hasKey)
         {
-            SetIconAndText(lockedIcon, "Door is locked.");
+            SetIconAndText(lockedIcon, "This door needs a key to be unlocked");
             return;
         }
         else if (hasKey)

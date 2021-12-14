@@ -31,7 +31,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (!Item) return;
 
-        Item.Drop(dropItemAnchor.position, playerController.transform.forward * throwSpeed);
+        Item.Drop(dropItemAnchor.position, playerController.playerCamera.transform.forward * throwSpeed);
         Item = null;
         SetItemImage(emptyTexture);
     }

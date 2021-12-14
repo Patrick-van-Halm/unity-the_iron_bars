@@ -45,3 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   display: {fileID: 0}
   interactableDefaultIcon: {fileID: 2800000, guid: 15e65e67dca4e4c4c92192f557b6ea71, type: 3}
+  noteScreen: {fileID: 0}
